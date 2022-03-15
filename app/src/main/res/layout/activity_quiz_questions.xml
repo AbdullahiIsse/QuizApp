@@ -4,32 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".QuizQuestionsActivity"
 
     >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
 
         <TextView
+            android:id="@+id/tv_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="What country does this flag belong to?"
+            tools:text="What country does this flag belong to?"
             android:textSize="26sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#363A43"/>
 
 
         <ImageView
-            android:layout_width="match_parent"
+            android:id="@+id/ivImage"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="40dp"
-            android:src="@drawable/ic_flag_of_argentina" />
+            android:contentDescription="Quiz image"
+            tools:src="@drawable/ic_flag_of_argentina" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,70 +53,85 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_weight="3.2"
-                android:progress="10"/>
+                android:max="10"
+                android:indeterminate="false"
+                android:progress="0"/>
 
             <TextView
+                android:id="@+id/tv_progress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="1/10"
+                android:paddingLeft="5dp"
 
 
                 />
         </LinearLayout>
 
         <TextView
-            style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/tv_option_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
+            android:background="@drawable/default_option_border_bg"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Argentina"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-
-        <TextView
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Australia"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-
-        <TextView
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Armenia"
+            tools:text="Argentina"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:textColor="#7A8089"/>
+
+
+        <TextView
+            android:id="@+id/tv_option_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/default_option_border_bg"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="Australia"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#7A8089"/>
+
+
+        <TextView
+            android:id="@+id/tv_option_three"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/default_option_border_bg"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="Armenia"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#7A8089"
+
 
             />
 
 
         <TextView
-            style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/tv_option_four"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:background="@drawable/default_option_border_bg"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Austria"
+            tools:text="Austria"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#7A8089"/>
 
 
         <Button
+            android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SUBMIT"
