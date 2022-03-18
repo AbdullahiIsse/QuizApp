@@ -6,12 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
-import kotlin.math.log
+
 
 class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -19,8 +16,6 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     private var mCurrentPosition: Int = 1
     private var mQuestionsList: ArrayList<Question>? = null
     private var mSelectedOptions:Int = 0
-
-
 
     private var progressBar:ProgressBar? = null
     private var tvProgress : TextView? = null
@@ -46,9 +41,14 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvOptionThree = findViewById(R.id.tv_option_three)
         tvOptionFour = findViewById(R.id.tv_option_four)
         btnSubmit = findViewById(R.id.btn_submit)
+        tvOptionOne?.setOnClickListener(this)
+        tvOptionTwo?.setOnClickListener(this)
+        tvOptionThree?.setOnClickListener(this)
+        tvOptionFour?.setOnClickListener(this)
+        btnSubmit?.setOnClickListener(this)
         mQuestionsList = Constants.getQuestions()
         setQuestion()
-        defaultOptionsView()
+
 
 
     }
@@ -57,6 +57,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
         Log.i("QuestionsList size is", "${mQuestionsList?.size}")
 
+          defaultOptionsView()
 
 
         val question: Question = mQuestionsList!![mCurrentPosition - 1]
@@ -100,9 +101,104 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    private fun selectedOptionView(tv:TextView, selectedOptionNum: Int){
+
+        defaultOptionsView()
+
+        mSelectedOptions = selectedOptionNum
+
+        tv.setTextColor((Color.parseColor("#363A43")))
+
+        tv.setTypeface(tv.typeface,Typeface.BOLD)
+
+        tv.background = ContextCompat.getDrawable(this,R.drawable.selecetd_option_border_bg)
+
+
+
+
+
+    }
+
 
 
     override fun onClick(v: View?) {
+
+        when (v?.id) {
+            R.id.tv_option_one -> {
+                tvOptionOne?.let {
+                    selectedOptionView(it,1)
+                }
+            }
+            R.id.tv_option_two -> {
+                tvOptionTwo?.let {
+                    selectedOptionView(it,2)
+                }
+
+            }
+            R.id.tv_option_three -> {
+                tvOptionThree?.let {
+                    selectedOptionView(it,3)
+                }
+            }
+            R.id.tv_option_four -> {
+                tvOptionFour?.let {
+                    selectedOptionView(it,4)
+                }
+
+            }
+            R.id.btn_submit -> {
+                btnSubmit?.let {
+
+                    if(mSelectedOptions == 0){
+                        mCurrentPosition++
+
+
+                        when {
+                            mCurrentPosition<= mQuestionsList!!.size -> {
+                                setQuestion()
+                            }
+                            else -> {
+                                Toast.makeText(this,"You made it to the end",Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        val question = mQuestionsList?.get(mCurrentPosition-1)
+
+                        if(question!!.correctAnswer != mSelectedOptions){
+
+                            answerView(mSelectedOptions,R.drawable.wrong_option_border_bg)
+                        }
+                            answerView(question.correctAnswer,R.drawable.correct_option_border_bg)
+
+                         if (mCurrentPosition == mQuestionsList!!.size){
+                             btnSubmit?.text = "FINSIH"
+                         } else{
+                             btnSubmit?.text = "GO TO NEXT QUESTION"
+                         }
+
+                        mSelectedOptions = 0
+
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    private fun answerView(answer:Int,drawableView: Int){
+        if(answer == 1){
+            tvOptionOne?.background = ContextCompat.getDrawable(this,drawableView)
+        } else if (answer == 2){
+            tvOptionTwo?.background = ContextCompat.getDrawable(this,drawableView)
+        } else if(answer == 3){
+            tvOptionThree?.background = ContextCompat.getDrawable(this,drawableView)
+        } else if (answer == 4){
+            tvOptionFour?.background = ContextCompat.getDrawable(this,drawableView)
+        }
+
+
+
 
     }
 }

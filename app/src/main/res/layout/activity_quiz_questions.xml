@@ -81,7 +81,8 @@
             tools:text="Argentina"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#7A8089"/>
+            android:textColor="#7A8089"
+            />
 
 
         <TextView
