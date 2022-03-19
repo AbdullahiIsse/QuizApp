@@ -2,6 +2,9 @@ package com.abdu.myquizapp
 
 object Constants {
 
+    const val USER_NAME : String = "User_name"
+    const val TOTAL_QUESTION: String = "total_questions"
+    const val CORRECT_ANSWERS:String = "correct_answers"
 
     fun getQuestions():ArrayList<Question>{
 

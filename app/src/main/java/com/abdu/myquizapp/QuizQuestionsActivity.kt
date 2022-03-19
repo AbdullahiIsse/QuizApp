@@ -1,5 +1,6 @@
 package com.abdu.myquizapp
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,8 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import kotlin.math.log
 
 
 class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
@@ -16,6 +19,10 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     private var mCurrentPosition: Int = 1
     private var mQuestionsList: ArrayList<Question>? = null
     private var mSelectedOptions:Int = 0
+    private var mUserName:String? = null
+    private var mCorrectAnswers:Int = 0
+
+    private var seeIfOptionsIsSelected: Int = 0
 
     private var progressBar:ProgressBar? = null
     private var tvProgress : TextView? = null
@@ -32,6 +39,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
 
+        mUserName = intent.getStringExtra(Constants.USER_NAME)
         progressBar = findViewById(R.id.progressBar)
         tvProgress = findViewById(R.id.tv_progress)
         tvQuestion = findViewById(R.id.tv_question)
@@ -107,6 +115,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
         mSelectedOptions = selectedOptionNum
 
+        seeIfOptionsIsSelected = selectedOptionNum
+
         tv.setTextColor((Color.parseColor("#363A43")))
 
         tv.setTypeface(tv.typeface,Typeface.BOLD)
@@ -127,60 +137,114 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
             R.id.tv_option_one -> {
                 tvOptionOne?.let {
                     selectedOptionView(it,1)
+
+
                 }
             }
             R.id.tv_option_two -> {
                 tvOptionTwo?.let {
                     selectedOptionView(it,2)
+
                 }
 
             }
             R.id.tv_option_three -> {
                 tvOptionThree?.let {
                     selectedOptionView(it,3)
+
                 }
             }
             R.id.tv_option_four -> {
                 tvOptionFour?.let {
                     selectedOptionView(it,4)
+
                 }
 
             }
             R.id.btn_submit -> {
+
+
                 btnSubmit?.let {
 
-                    if(mSelectedOptions == 0){
+                   if (seeIfOptionsIsSelected == 0){
+
+                        it.isClickable = false
+                       Toast.makeText(this,"PLEASE SELECT AN ANSWER", Toast.LENGTH_SHORT).show()
+                    } else{
+
+
+
+                    tvOptionOne?.isClickable = true
+                    tvOptionTwo?.isClickable = true
+                    tvOptionThree?.isClickable = true
+                    tvOptionFour?.isClickable = true
+
+
+
+                    if (mSelectedOptions == 0) {
                         mCurrentPosition++
 
 
+
                         when {
-                            mCurrentPosition<= mQuestionsList!!.size -> {
+                            mCurrentPosition <= mQuestionsList!!.size -> {
                                 setQuestion()
+                                seeIfOptionsIsSelected = 0
                             }
                             else -> {
-                                Toast.makeText(this,"You made it to the end",Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this, ActivityResult::class.java)
+
+                                intent.putExtra(Constants.USER_NAME, mUserName)
+                                intent.putExtra(Constants.CORRECT_ANSWERS, mCorrectAnswers)
+                                intent.putExtra(Constants.TOTAL_QUESTION, mQuestionsList?.size)
+                                startActivity(intent)
+                                finish()
                             }
                         }
+
                     } else {
-                        val question = mQuestionsList?.get(mCurrentPosition-1)
 
-                        if(question!!.correctAnswer != mSelectedOptions){
 
-                            answerView(mSelectedOptions,R.drawable.wrong_option_border_bg)
+                        val question = mQuestionsList?.get(mCurrentPosition - 1)
+
+
+                        if (question!!.correctAnswer != mSelectedOptions) {
+
+                            answerView(mSelectedOptions, R.drawable.wrong_option_border_bg)
+
+                        } else {
+
+                            mCorrectAnswers++
                         }
-                            answerView(question.correctAnswer,R.drawable.correct_option_border_bg)
 
-                         if (mCurrentPosition == mQuestionsList!!.size){
-                             btnSubmit?.text = "FINSIH"
-                         } else{
-                             btnSubmit?.text = "GO TO NEXT QUESTION"
-                         }
+                        answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
+                        tvOptionOne?.isClickable = false
+                        tvOptionTwo?.isClickable = false
+                        tvOptionThree?.isClickable = false
+                        tvOptionFour?.isClickable = false
 
+
+                        if (mCurrentPosition == mQuestionsList!!.size) {
+                            btnSubmit?.text = "FINSIH"
+
+                        } else {
+                            btnSubmit?.text = "GO TO NEXT QUESTION"
+
+                        }
+
+                        Log.e("test","the selected amount is $seeIfOptionsIsSelected")
                         mSelectedOptions = 0
 
                     }
 
-                }
+
+                    }
+                    it.isClickable = true
+
+
+
+            }
+
             }
         }
 
